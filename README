@@ -5,13 +5,11 @@
 \/    \/\__,_|_|_|     \___/ | .__/ \___|_| |_|    /___,' |_|___/\__|_|  \___/      \__/ |_|\__,_|___/\__|_|\___|_|\_\
                              |_|                                                                      
 
-
-
-                  This Python script it's suppoussed to be a POC to integrate Open Distro action destinations,   
-                  who had the possibility to interact with webhooks, in order to send mail notifications. 
+This Python script it's suppoussed to be a POC to integrate Open Distro action destinations,   
+who had the possibility to interact with webhooks, in order to send mail notifications. 
                   
-                  It may contain errors and can not operate as expected, use on ur own responsability.
-                  It's under GNU GENERAL PUBLIC LICENSE wich terms are:            
+It may contain errors and can not operate as expected, use on ur own responsability.
+It's under GNU GENERAL PUBLIC LICENSE wich terms are:            
                   
                   
                   
