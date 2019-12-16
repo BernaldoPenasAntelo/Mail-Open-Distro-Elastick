@@ -1,3 +1,11 @@
+###########################################################
+#  FLASK                                                  #
+#  https://ogma-dev.github.io/posts/simple-flask-webhook/ #
+#  pip install flask                                      #
+#  -create a file with allowed ip instead of dictionary   #
+#                                                         #
+###########################################################
+
 import os
 from datetime import datetime, timedelta
 from flask import Flask, request, abort, jsonify
@@ -7,9 +15,11 @@ port = 465  # For SSL
 user = "USER"
 password = "PASSWORD"
 server = "SERVER"
-#msg['From'] = "your_address"
-#msg['To'] = "to_address"
-#msg['Subject'] = "Subscription"
+messg = ""
+msg = MIMEText(messg,"plain")
+msg['From'] = "your_address"
+msg['To'] = "to_address"
+msg['Subject'] = "Subscription"
 
 
 def temp_token():
@@ -41,15 +51,23 @@ def webhook():
             if datetime.now() - authorised_clients.get(client) > timedelta(hours=CLIENT_AUTH_TIMEOUT):
                 authorised_clients.pop(client)
                 return jsonify({'status':'authorisation timeout'}), 401
-            else:
+            else:                
                 message = request.json
-                print(message[text])
-                #context = ssl.create_default_context()
-                #with smtplib.SMTP_SSL(server, port, context=context) as server:
-                    #server.login(user, password)
-                    #server.sendmail(msg['From'], msg['To'], msg.as_string())
-                    #server.quit()
-                                    return jsonify({'status':'success'}), 200
+                monitor,trigger,severity,start,end = message['text'].split('-')
+                messg="{} {} {} {} {}".format(monitor,trigger,severity,start,end) 
+
+                        
+                print(monitor)
+                print(trigger)
+                print(severity)
+                print(start)
+                print(end)
+                context = ssl.create_default_context()
+                with smtplib.SMTP_SSL(server, port, context=context) as server:
+                    server.login(user, password)
+                    server.sendmail(msg['From'], msg['To'], msg.as_string())
+                    server.quit()
+                return jsonify({'status':'success'}), 200
         else:
             return jsonify({'status':'not authorised'}), 401
 
