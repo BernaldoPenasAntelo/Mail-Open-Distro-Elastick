@@ -1,11 +1,3 @@
-###########################################################
-#  FLASK                                                  #
-#  https://ogma-dev.github.io/posts/simple-flask-webhook/ #
-#  pip install flask                                      #
-#  -create a file with allowed ip instead of dictionary   #
-#                                                         #
-###########################################################
-
 import os
 from datetime import datetime, timedelta
 from flask import Flask, request, abort, jsonify
