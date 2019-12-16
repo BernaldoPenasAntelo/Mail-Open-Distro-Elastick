@@ -1,17 +1,15 @@
-import os
+import os, re
 from datetime import datetime, timedelta
 from flask import Flask, request, abort, jsonify
 import smtplib, ssl
+from email.mime.text import MIMEText
+from secrets import user, password, ser, port
 
-port = 465  # For SSL
-user = "USER"
-password = "PASSWORD"
-server = "SERVER"
 messg = ""
 msg = MIMEText(messg,"plain")
-msg['From'] = "your_address"
-msg['To'] = "to_address"
-msg['Subject'] = "Subscription"
+msg['From'] = "bernaldo.penas@ednon.es"
+msg['To'] = "xturnerp_v662i@zmat.xyz"
+msg['Subject'] = "Alerta test1"
 
 
 def temp_token():
@@ -44,18 +42,18 @@ def webhook():
                 authorised_clients.pop(client)
                 return jsonify({'status':'authorisation timeout'}), 401
             else:                
+                print(authorised_clients)
                 message = request.json
-                monitor,trigger,severity,start,end = message['text'].split('-')
-                messg="{} {} {} {} {}".format(monitor,trigger,severity,start,end) 
-
+                m1 = message['text']
+                cont = sum(map(lambda x : 1 if '-' in x else 0, m1))
+                if cont == 4:
+                    monitor,trigger,severity,start,end = m1.split('-')
+                    messg="{} {} {} {} {}".format(monitor,trigger,severity,start,end) 
+                else:
+                    messg=m1
                         
-                print(monitor)
-                print(trigger)
-                print(severity)
-                print(start)
-                print(end)
                 context = ssl.create_default_context()
-                with smtplib.SMTP_SSL(server, port, context=context) as server:
+                with smtplib.SMTP_SSL(ser, port, context=context) as server:
                     server.login(user, password)
                     server.sendmail(msg['From'], msg['To'], msg.as_string())
                     server.quit()
