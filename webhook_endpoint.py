@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from flask import Flask, request, abort, jsonify
 import smtplib, ssl
 from email.mime.text import MIMEText
-from secrets import user, password, ser, port
+from secrets import user, password, ser, port, port_SSL
 
 messg = ""
 msg = MIMEText(messg,"plain")
@@ -44,19 +44,26 @@ def webhook():
             else:                
                 print(authorised_clients)
                 message = request.json
-                m1 = message['text']
+                m1 = 'Subject: {}\n\n{}'.format(msg['Subject'],message['text'])
                 cont = sum(map(lambda x : 1 if '-' in x else 0, m1))
                 if cont == 4:
                     monitor,trigger,severity,start,end = m1.split('-')
-                    messg="{} {} {} {} {}".format(monitor,trigger,severity,start,end) 
+                    messg='Subject: {}\n\n{}\n\n{}\n\n{}\n\n{}\n\n{}'.format(msg['Subject'],monitor,trigger,severity,start,end) 
                 else:
                     messg=m1
                         
                 context = ssl.create_default_context()
-                with smtplib.SMTP_SSL(ser, port, context=context) as server:
-                    server.login(user, password)
-                    server.sendmail(msg['From'], msg['To'], msg.as_string())
-                    server.quit()
+                try:
+                    smtpObj = smtplib.SMTP(ser, port)
+                except Exception as e:
+                    print(e)
+                    smtpObj = smtplib.SMTP_SSL(ser,port_SSL, context=context)
+                smtpObj.ehlo()
+                smtpObj.starttls()
+                smtpObj.login(user, password)
+                smtpObj.sendmail(msg['From'], msg['To'], messg) 
+
+                smtpObj.quit()
                 return jsonify({'status':'success'}), 200
         else:
             return jsonify({'status':'not authorised'}), 401
