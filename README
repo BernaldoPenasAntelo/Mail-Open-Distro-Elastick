@@ -20,4 +20,7 @@ To test the script you can use two queries to the webhook:
 2.-curl -H "Content-Type: application/json" -X POST -d '{"text": "This is some test data"}' 127.0.0.1:5000/webhook
                   
                   
+To generate alerts check the Open Distro documentation at:
+https://opendistro.github.io/for-elasticsearch-docs/
+                  
  
