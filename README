@@ -14,7 +14,13 @@ in to your project may be needed, use on ur own responsability.
 This code it's under GNU GENERAL PUBLIC LICENSE wich terms you can review on LICENSE file.           
                   
                   
+To test the script you can use two queries to the webhook:
+
+1.-curl <webhook-ip>:5000/webhook?verify_token=<token>
+2.-curl -H "Content-Type: application/json" -X POST -d '{"text": "This is some test data"}' 127.0.0.1:5000/webhook
                   
                   
+To generate alerts check the Open Distro documentation at:
+https://opendistro.github.io/for-elasticsearch-docs/
                   
  

@@ -7,7 +7,7 @@ from secrets import user, password, ser, port, port_SSL
 
 messg = ""
 msg = MIMEText(messg,"plain")
-msg['From'] = "bernaldo.penas@ednon.es"
+msg['From'] = ""
 msg['To'] = "xturnerp_v662i@zmat.xyz"
 msg['Subject'] = "Alerta test1"
 
