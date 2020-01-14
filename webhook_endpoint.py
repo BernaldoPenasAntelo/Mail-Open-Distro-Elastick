@@ -8,7 +8,7 @@ from secrets import user, password, ser, port, port_SSL
 messg = ""
 msg = MIMEText(messg,"plain")
 msg['From'] = ""
-msg['To'] = "xturnerp_v662i@zmat.xyz"
+msg['To'] = ""
 msg['Subject'] = "Alerta test1"
 
 
@@ -41,7 +41,7 @@ def webhook():
             if datetime.now() - authorised_clients.get(client) > timedelta(hours=CLIENT_AUTH_TIMEOUT):
                 authorised_clients.pop(client)
                 return jsonify({'status':'authorisation timeout'}), 401
-            else:                
+            else:
                 print(authorised_clients)
                 message = request.json
                 m1 = 'Subject: {}\n\n{}'.format(msg['Subject'],message['text'])
@@ -51,7 +51,7 @@ def webhook():
                     messg='Subject: {}\n\n{}\n\n{}\n\n{}\n\n{}\n\n{}'.format(msg['Subject'],monitor,trigger,severity,start,end) 
                 else:
                     messg=m1
-                        
+
                 context = ssl.create_default_context()
                 try:
                     smtpObj = smtplib.SMTP(ser, port)
